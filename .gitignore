@@ -1,0 +1,16 @@
+# Dependency folders
+/vendor
+/node_modules
+
+# Environment files
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code settings (optional)
+.vscode/
+
+# Logs
+*.log
