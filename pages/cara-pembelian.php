@@ -1,35 +1,35 @@
+<?php
+session_start();
+include '../config/path.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Cara Pembelian</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <link rel="stylesheet"
-          href="../style.css">
+    <!-- Your CSS (FIXED PATH SYSTEM) -->
+    <link rel="stylesheet" href="<?= CSS_URL ?>style.css">
 
 </head>
 
 <body>
 
-<?php include '../navbar.php'; ?>
+<?php include '../includes/navbar.php'; ?>
 
 <div class="container py-5">
 
     <!-- HEADER -->
-
-    <div class="guide-header mb-5">
+    <div class="guide-header mb-5 text-center">
 
         <span class="guide-badge">
             🛒 Panduan Belanja
@@ -40,161 +40,74 @@
         </h1>
 
         <p class="guide-text">
-            Ikuti langkah-langkah berikut untuk melakukan
-            pembelian produk di IoT Smart Store dengan mudah.
+            Ikuti langkah-langkah berikut untuk melakukan pembelian produk di IoT Smart Store.
         </p>
 
     </div>
 
     <!-- STEPS -->
-
     <div class="row g-4">
 
-        <!-- STEP 1 -->
+        <?php
+        $steps = [
+            [
+                "icon" => "bi-search",
+                "title" => "Pilih Produk",
+                "text"  => "Cari dan pilih produk IoT yang ingin dibeli sesuai kebutuhan Anda."
+            ],
+            [
+                "icon" => "bi-cart-plus",
+                "title" => "Add To Cart",
+                "text"  => "Tambahkan produk ke keranjang belanja dengan satu klik."
+            ],
+            [
+                "icon" => "bi-cart3",
+                "title" => "Buka Cart",
+                "text"  => "Lihat semua produk yang sudah Anda pilih di halaman cart."
+            ],
+            [
+                "icon" => "bi-credit-card",
+                "title" => "Checkout",
+                "text"  => "Lanjutkan ke proses checkout untuk membuat pesanan."
+            ],
+            [
+                "icon" => "bi-person-lines-fill",
+                "title" => "Isi Data",
+                "text"  => "Lengkapi data pengiriman seperti alamat dan nomor HP."
+            ],
+            [
+                "icon" => "bi-check-circle",
+                "title" => "Pesanan Diproses",
+                "text"  => "Admin akan memproses pesanan Anda setelah checkout."
+            ]
+        ];
+        ?>
 
-        <div class="col-lg-4 col-md-6">
+        <?php foreach ($steps as $step): ?>
 
-            <div class="guide-card">
+            <div class="col-lg-4 col-md-6">
 
-                <div class="guide-icon">
-                    <i class="bi bi-search"></i>
+                <div class="guide-card h-100">
+
+                    <div class="guide-icon">
+                        <i class="bi <?= $step['icon'] ?>"></i>
+                    </div>
+
+                    <h4><?= $step['title'] ?></h4>
+
+                    <p><?= $step['text'] ?></p>
+
                 </div>
-
-                <h4>
-                    Pilih Produk
-                </h4>
-
-                <p>
-                    Cari dan pilih produk IoT yang ingin dibeli
-                    sesuai kebutuhan Anda.
-                </p>
 
             </div>
 
-        </div>
-
-        <!-- STEP 2 -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="guide-card">
-
-                <div class="guide-icon">
-                    <i class="bi bi-cart-plus"></i>
-                </div>
-
-                <h4>
-                    Add To Cart
-                </h4>
-
-                <p>
-                    Tekan tombol Add To Cart untuk menambahkan
-                    produk ke keranjang belanja.
-                </p>
-
-            </div>
-
-        </div>
-
-        <!-- STEP 3 -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="guide-card">
-
-                <div class="guide-icon">
-                    <i class="bi bi-bag"></i>
-                </div>
-
-                <h4>
-                    Buka Cart
-                </h4>
-
-                <p>
-                    Masuk ke halaman cart untuk melihat
-                    daftar produk yang dipilih.
-                </p>
-
-            </div>
-
-        </div>
-
-        <!-- STEP 4 -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="guide-card">
-
-                <div class="guide-icon">
-                    <i class="bi bi-credit-card"></i>
-                </div>
-
-                <h4>
-                    Checkout
-                </h4>
-
-                <p>
-                    Klik tombol checkout untuk melanjutkan
-                    proses pemesanan.
-                </p>
-
-            </div>
-
-        </div>
-
-        <!-- STEP 5 -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="guide-card">
-
-                <div class="guide-icon">
-                    <i class="bi bi-person-lines-fill"></i>
-                </div>
-
-                <h4>
-                    Isi Data
-                </h4>
-
-                <p>
-                    Lengkapi data pembeli seperti nama,
-                    alamat, dan nomor telepon.
-                </p>
-
-            </div>
-
-        </div>
-
-        <!-- STEP 6 -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="guide-card">
-
-                <div class="guide-icon">
-                    <i class="bi bi-check-circle"></i>
-                </div>
-
-                <h4>
-                    Pesanan Diproses
-                </h4>
-
-                <p>
-                    Admin akan memproses pesanan dan
-                    menghubungi Anda setelah pembayaran.
-                </p>
-
-            </div>
-
-        </div>
+        <?php endforeach; ?>
 
     </div>
 
 </div>
 
-<?php include '../footer.php'; ?>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<?php include '../includes/footer.php'; ?>
 
 </body>
 

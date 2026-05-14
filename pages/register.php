@@ -1,59 +1,68 @@
-<!-- register.php -->
-
 <?php
 session_start();
 
 include '../config/firebase_auth.php';
+include '../config/firebase.php';
 
-if(isset($_SESSION['user'])){
+if (isset($_SESSION['user'])) {
     header("Location: /iot-tech/index.php");
     exit;
 }
 
 $error = '';
 
-if(isset($_POST['register'])){
+if (isset($_POST['register'])) {
 
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
     $confirmPassword = trim($_POST['confirm_password']);
 
-    if(empty($name) || empty($email) || empty($password)){
+    if (empty($name) || empty($email) || empty($password)) {
 
         $error = "Semua field wajib diisi";
 
-    }elseif(strlen($password) < 6){
+    } elseif (strlen($password) < 6) {
 
         $error = "Password minimal 6 karakter";
 
-    }elseif($password !== $confirmPassword){
+    } elseif ($password !== $confirmPassword) {
 
         $error = "Konfirmasi password tidak cocok";
 
-    }else{
+    } else {
 
-        try{
+        try {
 
+            // 1. CREATE AUTH USER
             $createdUser = $auth->createUser([
                 'email' => $email,
                 'password' => $password,
                 'displayName' => $name
             ]);
 
-            $_SESSION['success'] = "Register berhasil";
+            $uid = $createdUser->uid;
+
+            // 2. SAVE TO REALTIME DATABASE
+            $userData = [
+                'name' => $name,
+                'email' => $email,
+                'role' => 'user',
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+
+            firebaseSet("users/$uid", $userData);
+
+            $_SESSION['success'] = "Register berhasil, silakan login";
 
             header("Location: login.php");
             exit;
 
-        }catch(Exception $e){
+        } catch (Exception $e) {
 
-            $error = "Gagal register";
-
+            $error = "Gagal register: " . $e->getMessage();
         }
-
     }
-
 }
 ?>
 
@@ -63,9 +72,7 @@ if(isset($_POST['register'])){
 <head>
 
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Register</title>
 
@@ -78,8 +85,7 @@ if(isset($_POST['register'])){
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
           rel="stylesheet">
 
-    <link rel="stylesheet"
-          href="../style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 
 </head>
 
@@ -100,14 +106,10 @@ if(isset($_POST['register'])){
                     <div class="text-center mb-4">
 
                         <div class="auth-icon">
-
                             <i class="bi bi-person-plus-fill"></i>
-
                         </div>
 
-                        <h1 class="auth-title">
-                            Create Account
-                        </h1>
+                        <h1 class="auth-title">Create Account</h1>
 
                         <p class="auth-subtitle">
                             Buat akun baru IoT Smart Store
@@ -115,118 +117,56 @@ if(isset($_POST['register'])){
 
                     </div>
 
-                    <?php if($error): ?>
-
+                    <?php if ($error): ?>
                         <div class="alert alert-danger">
-
-                            <?php echo $error; ?>
-
+                            <?= $error ?>
                         </div>
-
                     <?php endif; ?>
 
                     <form method="POST">
 
                         <div class="mb-3">
-
-                            <label class="form-label">
-
-                                Full Name
-
-                            </label>
-
-                            <input type="text"
-                                   name="name"
-                                   class="form-control"
-                                   placeholder="Masukkan nama lengkap"
-                                   required>
-
+                            <label class="form-label">Full Name</label>
+                            <input type="text" name="name" class="form-control"
+                                   placeholder="Masukkan nama lengkap" required>
                         </div>
 
                         <div class="mb-3">
-
-                            <label class="form-label">
-
-                                Email Address
-
-                            </label>
-
-                            <input type="email"
-                                   name="email"
-                                   class="form-control"
-                                   placeholder="Masukkan email"
-                                   required>
-
+                            <label class="form-label">Email Address</label>
+                            <input type="email" name="email" class="form-control"
+                                   placeholder="Masukkan email" required>
                         </div>
 
                         <div class="mb-3">
-
-                            <label class="form-label">
-
-                                Password
-
-                            </label>
-
-                            <input type="password"
-                                   name="password"
-                                   class="form-control"
-                                   placeholder="Minimal 6 karakter"
-                                   required>
-
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control"
+                                   placeholder="Minimal 6 karakter" required>
                         </div>
 
                         <div class="mb-4">
-
-                            <label class="form-label">
-
-                                Confirm Password
-
-                            </label>
-
-                            <input type="password"
-                                   name="confirm_password"
-                                   class="form-control"
-                                   placeholder="Ulangi password"
-                                   required>
-
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" name="confirm_password" class="form-control"
+                                   placeholder="Ulangi password" required>
                         </div>
 
-                        <button type="submit"
-                                name="register"
+                        <button type="submit" name="register"
                                 class="btn btn-primary w-100 auth-button">
-
                             Create Account
-
                         </button>
 
                     </form>
 
                     <div class="text-center mt-4">
-
                         <p class="text-muted mb-0">
-
                             Sudah punya akun?
-
-                            <a href="login.php"
-                               class="auth-link">
-
-                               Login
-
-                            </a>
-
+                            <a href="login.php" class="auth-link">Login</a>
                         </p>
-
                     </div>
 
                     <div class="text-center mt-3">
-
-                        <a href="/iot-tech/index.php"
-                           class="back-home-link">
-
-                           ← Kembali ke Home
-
+                        <a href="/iot-tech/index.php" class="back-home-link">
+                            ← Kembali ke Home
                         </a>
-
                     </div>
 
                 </div>
@@ -240,5 +180,4 @@ if(isset($_POST['register'])){
 </div>
 
 </body>
-
 </html>

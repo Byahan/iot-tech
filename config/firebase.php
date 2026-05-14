@@ -1,35 +1,59 @@
 <?php
+// Prevent multiple inclusions
+if (!defined('FIREBASE_LOADED')) {
+    define('FIREBASE_LOADED', true);
 
-$firebaseURL = "https://uts-ecommerce-default-rtdb.asia-southeast1.firebasedatabase.app/";
+    $firebaseURL = "https://uts-ecommerce-default-rtdb.asia-southeast1.firebasedatabase.app/";
 
-function firebaseGet($path)
-{
-    global $firebaseURL;
+    function firebaseGet($path)
+    {
+        global $firebaseURL;
 
-    $url = $firebaseURL . $path . '.json';
+        $url = $firebaseURL . $path . '.json';
 
-    $data = file_get_contents($url);
+        $data = file_get_contents($url);
 
-    return json_decode($data, true);
+        return json_decode($data, true);
+    }
+
+    function firebasePost($path, $data)
+    {
+        global $firebaseURL;
+
+        $url = $firebaseURL . $path . '.json';
+
+        $options = [
+            'http' => [
+                'method' => 'POST',
+                'header' => "Content-type: application/json",
+                'content' => json_encode($data)
+            ]
+        ];
+
+        $context = stream_context_create($options);
+
+        return file_get_contents($url, false, $context);
+    }
+
+    function firebaseSet($path, $data)
+    {
+        global $firebaseURL;
+
+        $url = $firebaseURL . $path . '.json';
+
+        $options = [
+            'http' => [
+                'method'  => 'PUT',
+                'header'  => "Content-Type: application/json",
+                'content' => json_encode($data)
+            ]
+        ];
+
+        $context = stream_context_create($options);
+
+        $result = file_get_contents($url, false, $context);
+
+        return json_decode($result, true);
+    }
 }
-
-function firebasePost($path, $data)
-{
-    global $firebaseURL;
-
-    $url = $firebaseURL . $path . '.json';
-
-    $options = [
-        'http' => [
-            'method' => 'POST',
-            'header' => "Content-type: application/json",
-            'content' => json_encode($data)
-        ]
-    ];
-
-    $context = stream_context_create($options);
-
-    return file_get_contents($url, false, $context);
-}
-
 ?>

@@ -1,128 +1,138 @@
-<!-- pages/checkout.php -->
-
 <?php
 session_start();
+
+include '../config/path.php';
 include '../config/firebase.php';
 
-if(!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit;
+}
+
+if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+    echo "<script>
+        alert('Cart kosong');
+        window.location.href='../index.php';
+    </script>";
+    exit;
 }
 
 $cart = $_SESSION['cart'];
+$products = firebaseGet('products');
+
+$user = $_SESSION['user'];
+
+$uid = $user['uid'] ?? '';
+$name = $user['name'] ?? 'User';
+$email = $user['email'] ?? '';
 
 $total = 0;
 
-foreach($cart as $item) {
-    $total += $item['price'];
+/* CALCULATE TOTAL */
+foreach ($cart as $id => $qty) {
+
+    $item = $products[$id] ?? null;
+    if (!$item) continue;
+
+    $total += $item['price'] * $qty;
 }
 
-if(isset($_POST['checkout'])) {
+/* CHECKOUT */
+if (isset($_POST['checkout'])) {
+
+    $orderItems = [];
+
+    foreach ($cart as $id => $qty) {
+
+        if (!isset($products[$id])) continue;
+
+        $orderItems[] = [
+            'id' => $id,
+            'name' => $products[$id]['name'],
+            'price' => $products[$id]['price'],
+            'qty' => $qty,
+            'subtotal' => $products[$id]['price'] * $qty
+        ];
+    }
 
     $order = [
-
-        'customer' => $_POST['customer'],
-
+        'customer_uid' => $uid,
+        'customer' => $name,
+        'email' => $email,
         'address' => $_POST['address'],
-
         'phone' => $_POST['phone'],
-
         'payment' => $_POST['payment'],
-
-        'items' => $cart,
-
+        'items' => $orderItems,
         'total' => $total,
-
         'status' => 'Pending',
-
         'date' => date('Y-m-d H:i:s')
-
     ];
 
-    firebasePost('orders', $order);
+    $orderId = firebasePost('orders', $order);
+
+    /* store last order for payment page */
+    $_SESSION['last_order'] = $order;
 
     $_SESSION['cart'] = [];
 
-    echo "
-    <script>
-        alert('Order berhasil dibuat');
-        window.location.href='/iot-tech/index.php';
-    </script>
-    ";
-}
+    header("Location: payment.php");
 
+    echo "<script>
+        alert('Order berhasil dibuat');
+        window.location.href='../index.php';
+    </script>";
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Checkout</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet">
-
-    <link rel="stylesheet"
-          href="../style.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link href="<?= CSS_URL ?>style.css" rel="stylesheet">
 </head>
 
 <body>
 
-<?php include '../navbar.php'; ?>
+<?php include '../includes/navbar.php'; ?>
 
 <div class="container py-5">
 
     <div class="section-title mb-5">
-
-        <h2>
-            Checkout
-        </h2>
-
-        <p>
-            Lengkapi data pesanan Anda
-        </p>
-
+        <h2>Checkout</h2>
+        <p>Lengkapi data pengiriman Anda</p>
     </div>
 
     <div class="row">
-
-        <!-- ORDER DETAIL -->
 
         <div class="col-lg-5 mb-4">
 
             <div class="checkout-card">
 
-                <h4 class="mb-4">
-                    Detail Pesanan
-                </h4>
+                <h4>Detail Pesanan</h4>
 
-                <?php foreach($cart as $item): ?>
+                <hr>
 
-                    <div class="checkout-item">
+                <?php foreach ($cart as $id => $qty): ?>
 
-                        <div>
+                    <?php
+                        $item = $products[$id] ?? null;
+                        if (!$item) continue;
 
-                            <h6>
-                                <?php echo $item['name']; ?>
-                            </h6>
+                        $subtotal = $item['price'] * $qty;
+                    ?>
 
-                        </div>
-
-                        <div>
-
-                            Rp <?php echo number_format($item['price']); ?>
-
-                        </div>
-
+                    <div class="d-flex justify-content-between mb-2">
+                        <span><?= htmlspecialchars($item['name']) ?> x<?= $qty ?></span>
+                        <span>Rp <?= number_format($subtotal) ?></span>
                     </div>
 
                 <?php endforeach; ?>
@@ -130,106 +140,56 @@ if(isset($_POST['checkout'])) {
                 <hr>
 
                 <div class="d-flex justify-content-between">
-
                     <h5>Total</h5>
-
                     <h5 class="product-price">
-                        Rp <?php echo number_format($total); ?>
+                        Rp <?= number_format($total) ?>
                     </h5>
-
                 </div>
 
             </div>
 
         </div>
 
-        <!-- FORM -->
-
         <div class="col-lg-7">
 
             <div class="checkout-card">
 
-                <h4 class="mb-4">
-                    Data Customer
-                </h4>
+                <h4>Data Pemesan</h4>
+
+                <div class="mb-3">
+                    <label class="form-label">Nama</label>
+                    <input class="form-control" value="<?= htmlspecialchars($name) ?>" disabled>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input class="form-control" value="<?= htmlspecialchars($email) ?>" disabled>
+                </div>
 
                 <form method="POST">
 
                     <div class="mb-3">
-
-                        <label class="form-label">
-                            Nama Lengkap
-                        </label>
-
-                        <input type="text"
-                               name="customer"
-                               class="form-control"
-                               required>
-
+                        <label>Alamat</label>
+                        <textarea name="address" class="form-control" required></textarea>
                     </div>
 
                     <div class="mb-3">
-
-                        <label class="form-label">
-                            Alamat
-                        </label>
-
-                        <textarea name="address"
-                                  class="form-control"
-                                  rows="4"
-                                  required></textarea>
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Nomor HP
-                        </label>
-
-                        <input type="text"
-                               name="phone"
-                               class="form-control"
-                               required>
-
+                        <label>Nomor HP</label>
+                        <input type="text" name="phone" class="form-control" required>
                     </div>
 
                     <div class="mb-4">
-
-                        <label class="form-label">
-                            Metode Pembayaran
-                        </label>
-
-                        <select name="payment"
-                                class="form-select"
-                                required>
-
-                            <option value="">
-                                Pilih Pembayaran
-                            </option>
-
-                            <option value="Transfer Bank">
-                                Transfer Bank
-                            </option>
-
-                            <option value="E-Wallet">
-                                E-Wallet
-                            </option>
-
-                            <option value="COD">
-                                COD
-                            </option>
-
+                        <label>Metode Pembayaran</label>
+                        <select name="payment" class="form-select" required>
+                            <option value="">Pilih</option>
+                            <option>Transfer Bank</option>
+                            <option>E-Wallet</option>
+                            <option>COD</option>
                         </select>
-
                     </div>
 
-                    <button type="submit"
-                            name="checkout"
-                            class="btn btn-primary w-100">
-
-                            Buat Pesanan
-
+                    <button class="btn btn-primary w-100" name="checkout">
+                        Buat Pesanan
                     </button>
 
                 </form>
@@ -242,10 +202,7 @@ if(isset($_POST['checkout'])) {
 
 </div>
 
-<?php include '../footer.php'; ?>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<?php include '../includes/footer.php'; ?>
 
 </body>
-
 </html>
