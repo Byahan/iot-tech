@@ -48,7 +48,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                 
                 <!-- View Site Button -->
                 <li class="nav-item ms-lg-3">
-                    <a class="btn btn-primary" href="/iot-tech/index.php" target="_blank">
+                    <a class="btn btn-primary" href="<?= BASE_URL ?>" target="_blank">
                         <i class="bi bi-box-arrow-up-right"></i>
                         View Site
                     </a>

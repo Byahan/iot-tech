@@ -50,7 +50,7 @@ $vaNumber = '014' . rand(1000000000, 9999999999);
             </h3>
         </div>
 
-        <a href="/iot-tech/pages/orders.php" class="btn btn-primary w-100">
+        <a href="<?= PAGES_URL ?>orders.php" class="btn btn-primary w-100">
             Go to My Orders
         </a>
 

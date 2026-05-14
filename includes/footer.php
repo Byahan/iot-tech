@@ -29,7 +29,7 @@
                 <ul class="footer-links">
 
                     <li>
-                        <a href="/iot-tech/pages/cara-pembelian.php">
+                        <a href="<?= PAGES_URL ?>cara-pembelian.php">
                             Cara Pembelian
                         </a>
                     </li>
@@ -78,7 +78,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- OPTIONAL: your custom JS -->
-<script src="/iot-tech/assets/js/main.js"></script>
+<script src="<?= JS_URL ?>main.js"></script>
 
 <!-- Histats.com  START -->
 <script type="text/javascript">

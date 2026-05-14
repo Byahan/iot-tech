@@ -44,12 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_product'])) {
         
         if (in_array($fileext, $allowed)) {
             $newfilename = time() . '_' . uniqid() . '.' . $fileext;
-            $uploadpath = $_SERVER['DOCUMENT_ROOT'] . '/iot-tech/assets/images/' . $newfilename;
+            $uploadpath = ROOT_PATH . 'assets/images/' . $newfilename;
             
             if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadpath)) {
                 // Delete old image if exists
-                if ($product['image'] && file_exists($_SERVER['DOCUMENT_ROOT'] . '/iot-tech/assets/images/' . $product['image'])) {
-                    unlink($_SERVER['DOCUMENT_ROOT'] . '/iot-tech/assets/images/' . $product['image']);
+                if ($product['image'] && file_exists(ROOT_PATH . 'assets/images/' . $product['image'])) {
+                    unlink(ROOT_PATH . 'assets/images/' . $product['image']);
                 }
                 $updateData['image'] = $newfilename;
             } else {
@@ -257,7 +257,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_product'])) {
                     <div class="mb-4">
                         <label class="form-label">Gambar Saat Ini</label>
                         <br>
-                        <img src="/iot-tech/assets/images/<?= htmlspecialchars($product['image'] ?? 'placeholder.jpg') ?>" 
+                        <img src="<?= IMG_URL . htmlspecialchars($product['image'] ?? 'placeholder.jpg') ?>"> 
                              class="current-image" 
                              alt="Current Image">
                         <br>

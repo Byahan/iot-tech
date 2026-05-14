@@ -139,7 +139,7 @@ if (isset($_SESSION['user'])) {
 <nav class="navbar navbar-expand-lg navbar-dark <?= !$isAuthPage ? 'sticky-top' : '' ?>">
     <div class="container">
 
-        <a class="navbar-brand" href="/iot-tech/index.php">
+        <a class="navbar-brand" href="<?= BASE_URL ?>"
             IoT Smart Store
         </a>
 
@@ -153,7 +153,7 @@ if (isset($_SESSION['user'])) {
 
                 <li class="nav-item">
                     <a class="nav-link <?= $currentPage == 'index.php' ? 'active' : '' ?>"
-                       href="/iot-tech/index.php">
+                       href="<?= BASE_URL ?>">
                         Home
                     </a>
                 </li>
@@ -163,15 +163,15 @@ if (isset($_SESSION['user'])) {
                         Kategori
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark">
-                        <li><a class="dropdown-item" href="/iot-tech/pages/category.php?category=input">Input</a></li>
-                        <li><a class="dropdown-item" href="/iot-tech/pages/category.php?category=output">Output</a></li>
-                        <li><a class="dropdown-item" href="/iot-tech/pages/category.php?category=other">Other</a></li>
+                        <li><a class="dropdown-item" href="<?= PAGES_URL ?>category.php?category=input">Input</a></li>
+                        <li><a class="dropdown-item" href="<?= PAGES_URL ?>category.php?category=Output">Output</a></li>
+                        <li><a class="dropdown-item" href="<?= PAGES_URL ?>category.php?category=Other"">Other</a></li>
                     </ul>
                 </li>
 
                 <li class="nav-item ms-lg-2">
                     <a class="nav-link d-flex align-items-center gap-1"
-                       href="/iot-tech/pages/orders.php">
+                       href="<?= PAGES_URL ?>orders.php">
                         <i class="bi bi-receipt nav-icon"></i>
                         Orders
                     </a>
@@ -179,7 +179,7 @@ if (isset($_SESSION['user'])) {
 
                 <li class="nav-item ms-lg-3">
                     <a class="nav-link cart-icon-wrapper"
-                       href="/iot-tech/pages/cart.php">
+                       href="<?= PAGES_URL ?>cart.php">
 
                         <i class="bi bi-cart3 nav-icon"></i>
 
@@ -206,8 +206,8 @@ if (isset($_SESSION['user'])) {
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                            <li><a class="dropdown-item" href="/iot-tech/pages/profile.php">My Profile</a></li>
-                            <li><a class="dropdown-item text-danger" href="/iot-tech/pages/logout.php">Logout</a></li>
+                            <li><a class="dropdown-item" href="<?= PAGES_URL ?>profile.php">My Profile</a></li>
+                            <li><a class="dropdown-item text-danger" href="<?= PAGES_URL ?>logout.php">Logout</a></li>
                         </ul>
 
                     </li>
@@ -215,7 +215,7 @@ if (isset($_SESSION['user'])) {
                 <?php else: ?>
 
                     <li class="nav-item ms-lg-3">
-                        <a class="btn btn-primary" href="/iot-tech/pages/login.php">
+                        <a class="btn btn-primary" href="<?= PAGES_URL ?>login.php">
                             Login
                         </a>
                     </li>

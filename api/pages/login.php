@@ -8,7 +8,7 @@ include '../config/firebase_auth.php';
 
 /* if already logged in */
 if (isset($_SESSION['user'])) {
-    header("Location: /iot-tech/index.php");
+    header("Location: " . BASE_URL);
     exit;
 }
 
@@ -43,7 +43,7 @@ if (isset($_POST['login'])) {
             'role' => $userData['role'] ?? 'user'
         ];
 
-        header("Location: /iot-tech/index.php");
+        header("Location: " . BASE_URL);
         exit;
 
     } catch (Exception $e) {
@@ -134,7 +134,7 @@ if (isset($_POST['login'])) {
                     </div>
 
                     <div class="text-center mt-3">
-                        <a href="/iot-tech/index.php" class="back-home-link">
+                        <a href="<?= BASE_URL ?>" class="back-home-link">
                             ← Kembali ke Home
                         </a>
                     </div>

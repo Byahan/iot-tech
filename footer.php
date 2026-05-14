@@ -54,7 +54,7 @@
                 <ul class="footer-links">
 
                     <li>
-                        <a href="/iot-tech/pages/cara-pembelian.php">
+                        <a href="<?= BASE_URL ?>">
                             Cara Pembelian
                         </a>
                     </li>

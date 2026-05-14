@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
         
         if (in_array($fileext, $allowed)) {
             $newfilename = time() . '_' . uniqid() . '.' . $fileext;
-            $uploadpath = $_SERVER['DOCUMENT_ROOT'] . '/iot-tech/assets/images/' . $newfilename;
+            $uploadpath = $_SERVER['DOCUMENT_ROOT'] . '<?= BASE_URL ?>' . $newfilename;
             
             if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadpath)) {
                 $image = $newfilename;

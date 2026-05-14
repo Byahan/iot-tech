@@ -33,7 +33,7 @@
                 <ul class="footer-links">
                     <li><a href="dashboard.php">Dashboard</a></li>
                     <li><a href="visitors.php">Visitor Analytics</a></li>
-                    <li><a href="/iot-tech/index.php" target="_blank">View Store</a></li>
+                    <li><a href="<?= BASE_URL ?>" target="_blank">View Store</a></li>
                 </ul>
 
             </div>
@@ -63,7 +63,7 @@
                 </div>
 
                 <div class="col-md-6 text-md-end text-center">
-                    <a href="/iot-tech/pages/logout.php" class="text-danger text-decoration-none">
+                    <a href="<?= PAGES_URL ?>logout.php" class="text-danger text-decoration-none">
                         <i class="bi bi-box-arrow-right"></i> Logout
                     </a>
                 </div>

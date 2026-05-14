@@ -27,7 +27,7 @@ $isAuthPage = (
         <!-- LOGO -->
 
         <a class="navbar-brand"
-           href="/iot-tech/index.php">
+           href="<?= BASE_URL ?>">
 
            IoT Smart Store
 
@@ -56,7 +56,7 @@ $isAuthPage = (
                 <li class="nav-item">
 
                     <a class="nav-link"
-                       href="/iot-tech/index.php">
+                       href="<?= BASE_URL ?>">
 
                        Home
 
@@ -82,7 +82,7 @@ $isAuthPage = (
                         <li>
 
                             <a class="dropdown-item"
-                               href="/iot-tech/pages/category.php?category=input">
+                               href="<?= BASE_URL ?>">
 
                                Input
 
@@ -93,7 +93,7 @@ $isAuthPage = (
                         <li>
 
                             <a class="dropdown-item"
-                               href="/iot-tech/pages/category.php?category=output">
+                               href="<?= BASE_URL ?>">
 
                                Output
 
@@ -104,7 +104,7 @@ $isAuthPage = (
                         <li>
 
                             <a class="dropdown-item"
-                               href="/iot-tech/pages/category.php?category=other">
+                               href="<?= BASE_URL ?>">
 
                                Other
 
@@ -121,7 +121,7 @@ $isAuthPage = (
                 <li class="nav-item ms-lg-3">
 
                     <a class="nav-link cart-icon-wrapper"
-                       href="/iot-tech/pages/cart.php">
+                       href="<?= BASE_URL ?>">
 
                         <i class="bi bi-cart3 nav-icon"></i>
 
@@ -167,7 +167,7 @@ $isAuthPage = (
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
 
                                 <a class="dropdown-item"
-                                href="/iot-tech/pages/profile.php">
+                                href="<?= BASE_URL ?>">
 
                                 My Profile
 
@@ -178,7 +178,7 @@ $isAuthPage = (
                             <li>
 
                                 <a class="dropdown-item text-danger"
-                                href="/iot-tech/pages/logout.php">
+                                href="<?= BASE_URL ?>">
 
                                 Logout
 
@@ -195,7 +195,7 @@ $isAuthPage = (
                     <li class="nav-item ms-lg-3">
 
                         <a class="btn btn-primary"
-                        href="/iot-tech/pages/login.php">
+                        href="<?= BASE_URL ?>">
 
                         Login
 

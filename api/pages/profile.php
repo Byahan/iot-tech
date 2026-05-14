@@ -110,7 +110,7 @@ if (isset($_POST['update_profile'])) {
 
                     <div class="mt-4">
 
-                        <a href="/iot-tech/admin/dashboard.php"
+                        <a href="<?= BASE_URL ?>admin/dashboard.php"
                            class="btn btn-primary w-100 mb-3">
 
                             Go to Admin

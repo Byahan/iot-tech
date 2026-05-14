@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 /* FIX BASE PATH ISSUE */
-$basePath = "/iot-tech/pages/login.php";
+$basePath = PAGES_URL . "login.php";
 
 if (!isset($_SESSION['user'])) {
     header("Location: $basePath");

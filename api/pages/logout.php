@@ -3,6 +3,6 @@ session_start();
 
 session_destroy();
 
-header('Location: /iot-tech/index.php');
+header("Location: " . BASE_URL);
 exit;
 ?>

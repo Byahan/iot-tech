@@ -238,7 +238,7 @@ $deleted = isset($_GET['deleted']);
                         <?php foreach ($products as $id => $product): ?>
                             <tr>
                                 <td>
-                                    <img src="/iot-tech/assets/images/<?= htmlspecialchars($product['image'] ?? 'placeholder.jpg') ?>" 
+                                    <img src="<?= IMG_URL . htmlspecialchars($product['image'] ?? 'placeholder.jpg') ?>"> 
                                          class="product-image" 
                                          alt="<?= htmlspecialchars($product['name'] ?? '-') ?>">
                                 </td>
