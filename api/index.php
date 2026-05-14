@@ -1,8 +1,6 @@
-<!-- FULL index.php -->
-
 <?php
 session_start();
-include 'config/firebase.php';
+include __DIR__ . '/../config/firebase.php';
 
 $products = firebaseGet('products');
 ?>
@@ -23,7 +21,7 @@ $products = firebaseGet('products');
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
           rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
 
     <!-- HISTATS (PLACE HERE IN HEAD OR BEFORE </body>) -->
     <script type="text/javascript">
@@ -45,7 +43,7 @@ $products = firebaseGet('products');
 
 <body>
 
-<?php include 'navbar.php'; ?>
+<?php include __DIR__ . '/../navbar.php'; ?>
 
 <div class="container py-5">
 
@@ -98,7 +96,7 @@ $products = firebaseGet('products');
 
             <div class="col-lg-6 text-center">
 
-                <img src="assets/images/<?php echo htmlspecialchars($promoProduct['image']); ?>"
+                <img src="/assets/images/<?php echo htmlspecialchars($promoProduct['image']); ?>"
                      class="promo-image">
 
             </div>
@@ -161,7 +159,7 @@ $products = firebaseGet('products');
 
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include __DIR__ . '/../footer.php'; ?>
 
 <!-- TOAST -->
 <div id="cartToast" class="cart-toast">
@@ -174,7 +172,7 @@ $products = firebaseGet('products');
 
 function addToCart(productId){
 
-    fetch('/iot-tech/pages/cart.php?id=' + productId, {
+    fetch('/pages/cart.php?id=' + productId, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
         }
