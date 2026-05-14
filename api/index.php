@@ -155,7 +155,7 @@ $fakePrice = $originalPrice * 1.15;
 
 function addToCart(productId) {
 
-    fetch('/pages/cart.php?id=' + productId, {
+    fetch('/api/pages/cart.php?id=' + productId, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
         }
